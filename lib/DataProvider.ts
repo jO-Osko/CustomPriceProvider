@@ -242,6 +242,11 @@ class DataProvider {
                 this.symbol2epochId2priceInfo.get(p.symbol)!.set(epochId, new PriceInfo(epochId, preparedPrice, random));
             } else {
                 this.logger.error(`No price for ${p.symbol}`);
+                // This is ok, as it will be overriden by the provider query in the next step
+                let preparedPrice = 100000;
+                index2price.set(Number(this.symbol2Index.get(conf.symbolPrefix + p.symbol)), preparedPrice);
+                this.logger.info(`${p.label} | Submitting price dummy: ${(preparedPrice / 10 ** p.decimals).toFixed(p.decimals)} $ for ${epochId}`);
+                this.symbol2epochId2priceInfo.get(p.symbol)!.set(epochId, new PriceInfo(epochId, preparedPrice, random));
             }
         }
 
